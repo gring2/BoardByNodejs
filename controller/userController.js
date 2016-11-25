@@ -39,7 +39,6 @@ return new bird(function(resolve, reject){
           var authenticate = authedUser.authenticate(password,user._doc.salt,user._doc.hashed_password);
          if(!authenticate) reject('authenticate');
          else{
-           console.log(authedUser);
           resolve(authedUser);
          }
        }

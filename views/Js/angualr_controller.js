@@ -7,7 +7,7 @@ myApp.controller('MainCTR', ['$scope', 'Server','sharedProperties' ,function ($s
 		$('#signId').val('');
 		$('#signPw').val('');
 
-	}
+	};
 	$scope.signIn=function(event){
 	var email =	$('#userId').val();
 	var pw =	$('#userPw').val();
@@ -39,11 +39,19 @@ myApp.controller('MainCTR', ['$scope', 'Server','sharedProperties' ,function ($s
 		.success(function(data,status,header,config){
 			$scope.message = data.msg;
 			console.log($scope.message);
-		})
-	}
+		});
+	};
 
 	$scope.signInLogChange = function(event) {
 		$scope.signInLog=false;
-	}
-
+	};
+	$scope.logOut = function(event){
+		Server.post('/logOut')
+		.success(function(data, status,header, config){
+			console.log('logOuted');
+		})
+		.error(function(data,status,header,config){
+			console.log('Failed');
+		});
+	};
 }]);

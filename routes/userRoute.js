@@ -1,6 +1,5 @@
 var userController = require('../controller/userController');
 
-
 var signup = function(req,res,next){
   var email = req.body.email;
   var pw = req.body.pw;
@@ -28,12 +27,15 @@ var signup = function(req,res,next){
   });
 };
 var signIn = function(req, res , next){
+  console.log('upper %s', req.session.userEmail);
+
   var email = req.body.email;
   var pw = req.body.pw;
   var db = req.app.get('db');
   userController.authUser(email, pw, db.localUserModel)
   .then(function(user){
-    console.log('auth User %s ', user);
+    req.session.userEmail = user.email;
+    console.log('auth User %s ', req.session.userEmail);
     res.send({email:user.email});
   })
   .catch(function(err){
@@ -45,6 +47,20 @@ var signIn = function(req, res , next){
     }
   });
 };
+var logOut = function(req, res, next){
+console.log('LogOUt');
+  var email = req.session.userEmail;
+  console.log(email);
+  if(email){
+    req.session.destroy(function(err) {
+      if(err) throw err;
+      else{
+          res.send({msg:'Outed'});
+      }
+    });
+  }
+};
 module.exports.signIn=signIn;
+module.exports.logOut=logOut;
 
 module.exports.signup=signup;
