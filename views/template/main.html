@@ -1,0 +1,138 @@
+<div class="ui grid">
+  <div class="twelve wide column">
+    <table id="MainBoard" class="ui celled table">
+      <thead>
+        <th></th>
+        <th style="width:10%;">No</th>
+        <th style="width:60%;">Title</th>
+        <th style="width:15%;">Writer</th>
+        <th style="width:5%;">Comments</th>
+        <th style="width:5%;">Hits</th>
+      </thead>
+
+    <tbody>
+      <tr>
+        <td>
+          <div class="ui right pointing red basic label">
+              New
+          </div>
+        </td>
+        <td >
+            4
+        </td>
+        <td >Title4</td>
+        <td>Writer4</td>
+        <td>
+        <a>  0</a>
+        </td>
+        <td>1</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>
+          3
+        </td>
+        <td>Title3</td>
+        <td>Writer3</td>
+        <td>
+          <a>  0</a>
+        </td>
+        <td>1</td>
+      </tr>
+      <tr>
+        <td></td>
+
+        <td>
+          2
+        </td>
+        <td>Title2</td>
+        <td>Writer2</td>
+        <td>
+          <a>  0</a>
+        </td>
+        <td>1</td>
+      </tr>
+      <tr>
+        <td></td>
+
+        <td>
+          1
+        </td>
+        <td>Title1</td>
+        <td>Writer1</td>
+        <td>
+          <a>  0</a>
+        </td>
+        <td>1</td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <th style="border:none;background-color:white;"></th>
+        <th colspan="5">
+            <div class="ui small button" >
+            <i class="write icon"> </i>Write
+          </div>
+          <div class="ui right floated pagination menu">
+            <a class="icon item">
+              <i class="left chevron icon"></i>
+            </a>
+            <a class="item">1</a>
+            <a class="item">2</a>
+            <a class="item">3</a>
+            <a class="item">4</a>
+            <a class="item">5</a>
+            <a class="icon item">
+              <i class="right chevron icon"></i>
+            </a>
+          </div>
+        </th>
+      </tr>
+    </tfoot>
+
+    </table>
+  </div>
+  <div class="four wide column">
+
+    <div id="commentList" class="ui celled list">
+      <div class="item">
+        <img class="ui avatar image" src="/images/avatar/small/helen.jpg">
+        <div class="content">
+          <div class="header">Snickerdoodle</div>
+          An excellent companion
+        </div>
+      </div>
+      <div class="item">
+        <img class="ui avatar image" src="/images/avatar/small/daniel.jpg">
+        <div class="content">
+          <div class="header">Poodle</div>
+          A poodle, its pretty basic
+        </div>
+      </div>
+      <div class="item">
+        <img class="ui avatar image" src="/images/avatar/small/daniel.jpg">
+        <div class="content">
+          <div class="header">Paulo</div>
+          He's also a dog
+        </div>
+      </div>
+      <div class="item ui input focus" style="display:inline-block">
+        <input type="text">
+      </div>
+      <input class="ui button" id="writeComment" type="button" value="OK">
+
+    </div>
+
+  </div>
+</div>
+<script>
+  $(function(){
+    $('#writeComment').on('click',function(){
+        $('#commentList').prepend("<div class='item'>"+
+        "<img class='ui avatar image' src='/images/avatar/small/daniel.jpg'>"
+        +"<div class='content'>"
+        +"<div class='header'>Paulo</div>He's also a dog</div>"
+          )
+    })
+  })
+</script>

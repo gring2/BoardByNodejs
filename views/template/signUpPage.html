@@ -1,0 +1,30 @@
+<div class="signContainer">
+    <div style="width:50%;">
+        <div class="ui left icon input" >
+          <input type="text" id="signId" placeholder="Username">
+                  <i class="user icon"></i>
+        </div>
+        <div  class="ui left icon input" >
+          <input type="password" id="signPw" placeholder="password">
+          <i class="lock icon"></i>
+        </div>
+        <div id="buttonBox" style="flex-flow:row">
+          <button class="ui primary button"  ng-click="signUp($event)">singUp</button>
+          <button class="ui secondary button"  ng-click="cancel($event)">cancel</button>
+        </div>
+        <h3 >
+          {{message}}
+        </h3>
+    </div>
+</div>
+<script>
+  $(function(){
+    $('#buttonBox').css('width',$('#buttonBox').prev().css('width'));
+    var parentWidth = $('#buttonBox').css('width');
+    var kids = $('#buttonBox').children()
+    kids.each(function(){
+      $(this).css('width',parseInt(parentWidth)/2);
+    })
+
+  })
+</script>
