@@ -66,16 +66,3 @@ http.createServer(app).listen(app.get('port'), function(){
 https.createServer(options,app).listen(config.https_port, function(){
   console.log('port is'+ config.https_port);
 });
-
-app.get('/login', function (req, res){
-	res.writeHead(200, {'Content-Type': 'text/html'});
-	res.write('<h3>Login</h3>');
-	res.write('<form method="POST" action="/login">');
-	res.write('<label name="userId">UserId : </label>')
-	res.write('<input type="text" name="userId"><br/>');
-	res.write('<label name="password">Password : </label>')
-	res.write('<input type="password" name="password"><br/>');
-	res.write('<input type="submit" name="login" value="Login">');
-	res.write('</form>');
-	res.end();
-})
