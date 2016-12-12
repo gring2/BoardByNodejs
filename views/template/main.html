@@ -1,3 +1,6 @@
+
+
+
 <div class="ui grid">
   <div class="twelve wide column">
     <table id="MainBoard" class="ui celled table">
@@ -11,128 +14,76 @@
       </thead>
 
     <tbody>
-      <tr>
+      <tr ng-repeat="thread in threads">
         <td>
-          <div class="ui right pointing red basic label">
+          <div class="ui right pointing red basic label" ng-if="thread.isNew===true " >
               New
           </div>
         </td>
-        <td >
-            4
-        </td>
-        <td >Title4</td>
-        <td>Writer4</td>
-        <td>
-        <a>  0</a>
-        </td>
-        <td>1</td>
-      </tr>
-      <tr>
-        <td></td>
-        <td>
-          3
-        </td>
-        <td>Title3</td>
-        <td>Writer3</td>
-        <td>
-          <a>  0</a>
-        </td>
-        <td>1</td>
-      </tr>
-      <tr>
-        <td></td>
+        <td>{{thread._id}}</td>
+        <td class="thead title" ng-click="openThread(thread._id)">
 
-        <td>
-          2
+            {{thread.title}}
         </td>
-        <td>Title2</td>
-        <td>Writer2</td>
-        <td>
-          <a>  0</a>
-        </td>
-        <td>1</td>
-      </tr>
-      <tr>
-        <td></td>
+        <td>{{thread.writer}}</td>
+        <td>{{thread.commentNum}}</td>
+        <td>{{thread.Hits}}</td>
 
-        <td>
-          1
-        </td>
-        <td>Title1</td>
-        <td>Writer1</td>
-        <td>
-          <a>  0</a>
-        </td>
-        <td>1</td>
       </tr>
+
     </tbody>
     <tfoot>
       <tr>
         <th style="border:none;background-color:white;"></th>
         <th colspan="5">
-            <div class="ui small button" >
+          <div class="ui small button" ng-click="goWriteForm()">
             <i class="write icon"> </i>Write
           </div>
-          <div class="ui right floated pagination menu">
-            <a class="icon item">
-              <i class="left chevron icon"></i>
-            </a>
-            <a class="item">1</a>
-            <a class="item">2</a>
-            <a class="item">3</a>
-            <a class="item">4</a>
-            <a class="item">5</a>
-            <a class="icon item">
-              <i class="right chevron icon"></i>
-            </a>
-          </div>
-        </th>
-      </tr>
-    </tfoot>
+            <div class="ui right floated pagination menu">
+              <a class="icon item"  ng-click="prevPage()">
+                <i class="left chevron icon"></i>
+              </a>
+              <span ng-repeat="number in numberOfPannel | limitTo: 4 | filter : compare">
+                <a class="item pagePannel No{{$index}}" ng-click="pageChange(number)">{{number}}</a>
+              </span >
+              <a class="item pagePannel" id="lastPage" ng-if="numberOfPannel.length>4">...</a>
 
+              <a class="icon item" ng-click="nextPage()">
+                <i class="right chevron icon"></i>
+              </a>
+            </div>
+          </th>
+        </tr>
+      </tfoot>
     </table>
-  </div>
-  <div class="four wide column">
+    <div ng-include="threadViewer" autoscroll style="width:90%; float:right" >
 
-    <div id="commentList" class="ui celled list">
-      <div class="item">
-        <img class="ui avatar image" src="/images/avatar/small/helen.jpg">
-        <div class="content">
-          <div class="header">Snickerdoodle</div>
-          An excellent companion
-        </div>
-      </div>
-      <div class="item">
-        <img class="ui avatar image" src="/images/avatar/small/daniel.jpg">
-        <div class="content">
-          <div class="header">Poodle</div>
-          A poodle, its pretty basic
-        </div>
-      </div>
-      <div class="item">
-        <img class="ui avatar image" src="/images/avatar/small/daniel.jpg">
-        <div class="content">
-          <div class="header">Paulo</div>
-          He's also a dog
-        </div>
-      </div>
-      <div class="item ui input focus" style="display:inline-block">
-        <input type="text">
-      </div>
-      <input class="ui button" id="writeComment" type="button" value="OK">
+    </div>
+    <div ng-include="template" autoscroll style="width:90%; float:right">
 
     </div>
 
   </div>
+  <div class="four wide column" ng-include="commentList">
+
+
+
+  </div>
 </div>
 <script>
+
+
   $(function(){
     $('#writeComment').on('click',function(){
+
         $('#commentList').prepend("<div class='item'>"+
         "<img class='ui avatar image' src='/images/avatar/small/daniel.jpg'>"
         +"<div class='content'>"
         +"<div class='header'>Paulo</div>He's also a dog</div>"
           )
     })
+
+
   })
+
 </script>

@@ -1,0 +1,13 @@
+<div id="commentList" class="ui celled list" ng-repeat="comment in comList ">
+  <div class="item">
+    <img class="ui avatar image" src="/images/avatar/small/helen.jpg">
+    <div class="content">
+      <div class="header">{{comment.commentor}}</div>
+      {{comment.comment}}
+    </div>
+  </div>
+</div>
+<div class="item ui input focus" style="display:inline-block">
+  <input type="text" id="writeComment">
+</div>
+<input class="ui button"  type="button" value="OK" ng-click="writeComment()">

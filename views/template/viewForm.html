@@ -1,0 +1,31 @@
+<div >
+
+    <div class="ui card" style="width :100%;">
+      <div class="content">
+         <div class="header">
+           {{threadView.title}}
+         </div>
+          <div class="meta">
+            {{threadView.dayDiff}} days ago
+          </div>
+         <div class="description">
+           <p>
+             {{threadView.context}}
+
+           </p>
+         </div>
+       </div>
+       <div class="extra content">
+         <div class="right floated author">
+           Author:&nbsp;'
+              {{threadView.writer}}
+         </div>
+       </div>
+     </div>
+
+      <div class = "field" id="scroll">
+        <div class="ui buttons">
+          <button class="ui button" ng-click="close()">close</button>
+        </div>
+      </div>
+</div>

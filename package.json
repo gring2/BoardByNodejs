@@ -11,8 +11,10 @@
   "dependencies": {
     "bluebird": "^3.4.6",
     "body-parser": "^1.15.2",
+    "co": "^4.6.0",
     "cookie-parser": "^1.4.3",
     "cookie-session": "^2.0.0-alpha.2",
+    "cors": "^2.8.1",
     "crypto": "0.0.3",
     "ejs": "^2.5.2",
     "errorhandler": "^1.5.0",
@@ -22,11 +24,18 @@
     "method-override": "^2.3.6",
     "mongodb": "^2.2.11",
     "mongoose": "^4.6.8",
+    "mongoose-auto-increment": "^5.0.1",
     "morgan": "^1.7.0",
     "multer": "^1.2.0",
     "mysql": "^2.12.0",
+    "passport": "^0.3.2",
+    "passport-facebook": "^2.1.1",
+    "passport-google-oauth": "^1.0.0",
+    "passport-local": "^1.0.0",
+    "passport-twitter": "^1.0.4",
     "semantic-ui": "^2.2.6",
     "serve-favicon": "^2.3.0",
-    "serve-static": "^1.11.1"
+    "serve-static": "^1.11.1",
+    "socket.io": "^1.7.2"
   }
 }

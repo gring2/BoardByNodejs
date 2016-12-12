@@ -2,11 +2,17 @@
 <html>
   <head>
     <link rel="stylesheet" type="text/css" href="../semantic/dist/semantic.min.css">
-    <script src="./js/jquery-2.1.4.min.js"></script>
+    <script src="../js/jquery-3.1.1.min.js"></script>
     <script src="../semantic/dist/semantic.min.js"></script>
-    <script type="text/javascript" src = "./js/angular.min.js"></script>
+    <script type="text/javascript" src = "../js/angular.min.js"></script>
+    <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+
     <meta charset="utf-8">
     <title><%=title%></title>
+     <script>
+      var user = <%- JSON.stringify(title) %>;
+      angular.module('Value', []).value('Value',user);
+    </script>
     <style>
       button{
         width: 32%;
@@ -16,6 +22,9 @@
       }
       .container{
         padding-top: 2%;
+      }
+      .headcontent:hover{
+        cursor:pointer;
       }
       .first{
         flex-flow: column;
@@ -58,23 +67,41 @@
         justify-content: center;
 
       }
+      .item.pagePannel.No0{
+        background: rgba(34,36,38,.1);
+      }
+      .thead.title:hover{
+        background: rgba(34,36,38,.1);
+        cursor: pointer;
+      }
     </style>
   </head>
   <body>
-    <div class = "ui container" ng-app="myApp" ng-controller="MainCTR">
+    <div class = "ui container" id="container" ng-app="myApp" ng-controller="MainCTR">
+      <%if (email) { %>
+        <span ng-init="OauthUser('<%= email %>')"></span>
+      <%}%>
+      <% if(threads) { %>
+      <script>
+        var user = <%- JSON.stringify(threads.users) %>;
+        var cnt = <%= threads.count%>
+        var preLoads = angular.module('preLoads',[]);
+        preLoads.value('preLoads',user);
+        preLoads.value('count',cnt);
+      </script>
+        <%}%>
       <div class="ui grid">
         <h2 class="ui header eight wide column">
-          <i class="hashtag icon"></i>
-          <div class="content">
+          <i class=" hashtag icon headcontent"  ng-click="backtoMain()"></i>
+          <div class="content headcontent" ng-click="backtoMain()">
             Free Board
             <div class="sub header">Full nodejs Module</div>
           </div>
-
-          <a class="" href="main#/signUpPage"><div >Signup Now</div></a>
+          <a class="" id="signupMenu"  ng-click="changeToSignPage()"><div >Signup Now</div></a>
         </h2>
-        <div ng-if="signIned==false" id="signUp_Box" class="eight wide column">
+        <div ng-show="signIned==false" id="signUp_Box" class="eight wide column">
             <table style="width:100%;margin-bottom:3%">
-              <tr ng-if="signInLog==true">
+              <tr ng-show="failLog==true">
                 <td>
                     <div class="ui warning message ">
                     <i class="close icon" ng-click="signInLogChange($event)"></i>
@@ -85,7 +112,7 @@
                   </div>
               </td>
               </tr>
-              <tr ng-if="signInLog == false">
+              <tr ng-show="failLog == false">
                 <td class="ui left icon input" style="width:95%">
                   <input type="text" id="userId" placeholder="Username">
                           <i class="user icon"></i>
@@ -94,7 +121,7 @@
 
                 </td>
               </tr>
-              <tr ng-if="signInLog == false">
+              <tr ng-show="failLog == false">
                 <td class="ui left icon input" style="width:95%">
                   <input type="password" id="userPw" placeholder="password">
                   <i class="lock icon"></i>
@@ -103,21 +130,21 @@
               </tr>
             </table>
               <div class="button-set">
-              <button class="ui facebook button">
+              <button class="ui facebook button" ng-click="facebookAuth()">
                 <i class="facebook icon"></i>
                 Facebook
               </button>
-              <button class="ui google plus button">
+              <button class="ui google plus button" ng-click="googleAuth()">
                 <i class="google plus icon"></i>
                 Google
               </button>
-              <button class="ui twitter button">
+              <button class="ui twitter button"  ng-click="twitterAuth()">
                 <i class="twitter icon"></i>
                 Twitter
               </button>
             </div>
           </div>
-          <div ng-if="signIned==true" class="eight wide column ui grid" style="text-align:right">
+          <div ng-show="signIned==true" class="eight wide column ui grid" style="text-align:right">
             <div class=" ten wide column">
               <h2 class="ui header">
                 <img src="./images/stevie.jpg" class="ui mini circular image">
@@ -129,15 +156,37 @@
              </div>
 
           </div>
-      </div>
-      <ng-view>
+        </div>
+       <div ng-view>
 
-	    <ng-view>
-        <script type="text/javascript" src="./js/angular-route.js"></script>
-        <script type="text/javascript" src="./js/angularModule.js"></script>
-        <script type="text/javascript" src="./js/angualr_controller.js"></script>
+	    </div ng-view>
+      <%include ./modal.html %>
+
+        <script type="text/javascript" src="../js/angular-route.js"></script>
+        <script type="text/javascript" src="../js/angularModule.js"></script>
+        <script type="text/javascript" src="../js/angualr_controller.js"></script>
+        <script type="text/javascript" src="../js/sign_controller.js"></script>
+        <script type="text/javascript" src="../js/write_controller.js"></script>
 
         <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-sanitize.js"></script>
+        <script>
+        (
+          function(){
+            var option = {'forceNew' : true};
+            var url = 'http://localhost:3333/';
+            alert(url);
+            socket = io.connect(url,option);
+            socket.on('connect',function(){
+              println('connected to Web Socket' + url);
+              socket.on('message',function(message){
+                console.log(JSON.stringify(message));
 
+                println('<p> received message' + message.sender+', '+message.recepient+
+                        ', '+message.command+', '+message.type+', '+message.data+'</p>');
+              })
+            });
+          }
+        )()
+        </script>
   </body>
 </html>

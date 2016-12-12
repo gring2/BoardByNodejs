@@ -1,27 +1,26 @@
 
 var bird = require('bluebird');
 var UserModel;
-var addUser = function(database, email, password,callback){
-  console.log('addUser called');
+var addUser = function(database, email, password){
   var result;
-  UserModel = database.localUserModel;
-  var user = new UserModel({"email": email, "password":password});
+  UserModel = database.UserModel;
+  return new bird(function(resolve,reject){
+    var user = new UserModel({"email": email, "password":password});
 
-  user.save(function(err){
-    if(err){
-      callback(err, null);
-      return;
-    }
-    console.log('UserAdded');
-    callback(null,user);
+    user.save(function(err){
+      if(err){
+        reject('save error')
+      }
+      resolve(user);
+    });
+  })
+  .catch(function(err){
+    throw err;
   });
-  console.log('result is %s',result);
 
-  return result;
 };
 
 var authUser = function(email,password,dbModel){
-  console.log('authUser called');
   UserModel = dbModel;
   var result =null;
 return new bird(function(resolve, reject){
@@ -45,10 +44,9 @@ return new bird(function(resolve, reject){
     });
   })
    .catch(function(err){
-     console.error(err);
      throw(err);
    }
    );
 }
-exports.authUser = authUser;
-exports.addUser = addUser;
+module.exports.authUser = authUser;
+module.exports.addUser = addUser;
