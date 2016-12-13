@@ -1,6 +1,6 @@
 var threadController = require('../controller/threadController');
 var bird = require('bluebird');
-module.exports = function(app){
+module.exports = function(app,socketInstance){
   app.post('/saveWriting',function(req,res){
     if(req.isAuthenticated()){
 
@@ -13,7 +13,6 @@ module.exports = function(app){
     thread["writer"] = req.user.email;
     threadController.addThread(autoinc,db,thread)
     .then(function(threadInstance){
-      console.log(threadInstance);
       res.end();
     });
   });
@@ -27,12 +26,14 @@ module.exports = function(app){
       var comment = req.body.comment;
       var number = req.body.nowIndex;
       var commentor = req.user.email;
-      console.log(commentor);
       threadController.writeComment(req.app.get('db'),comment,number,commentor)
       .then(function(comment){
           return threadController.getCommentList(req.app.get('db'),number);
       })
       .then(function(result){
+
+        socketInstance.to(number)
+        .emit("newComment" ,result[0]);
         res.send({comList:result});
       })
       .catch(function(err){

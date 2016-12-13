@@ -1,6 +1,9 @@
 
-myApp.controller('MainCTR' ,['setPagePanner','count','preLoads','$scope', 'Server','$routeParams','sharedProperties','$location'
-,function (setPagePanner,count,preLoads,$scope, Server,$routeParams,sharedProperties,$location) {
+myApp.controller('MainCTR' ,['$window','setPagePanner','count','preLoads','$scope', 'Server','$routeParams','sharedProperties','$location'
+,function ($window,setPagePanner,count,preLoads,$scope, Server,$routeParams,sharedProperties,$location) {
+	var socket = $window.socket;
+	$scope.$root.comList;
+	socket.connection();
 	$scope.$root.count=count;
 	$scope.$root.threads = preLoads;
 	compareTime();
@@ -119,8 +122,9 @@ Server.get('/viewThread/'+id)
 			$scope.threadView = thread;
 			sharedProperties.setProperty('nowIndex',id);
 			$scope.threadViewer ='../template/viewForm.html';
-			$scope.commentList = '../template/commentList.html'
+			$scope.commentList = '../template/commentList.html';
 			$scope.$root.comList=data.result.comList;
+			socket.interActing('room',{id:id});
 		})
 		.error(function(error){
 			console.log(error);
@@ -131,6 +135,8 @@ Server.get('/viewThread/'+id)
 		$scope.threadViewer=undefined; 	$scope.commentList = undefined;
 	}
 	//utill function
+
+
 	function threadListRenew(listNo){
 		Server.get('/reNew/'+listNo)
 		.success(function(data){

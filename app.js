@@ -64,15 +64,6 @@ app.use(passport.initialize());
 
 app.use(passport.session());
 
-var passportSetup = require('./config/passport/passportSetup');
-passportSetup(app,passport);
-var passport_Router = require('./routes/passport_Router');
-passport_Router(app,passport);
-var view_Router = require('./routes/viewRoute');
-view_Router(app);
-var write_Router = require('./routes/writeRoute');
-write_Router(app);
-
 // app.get('/',function(req,res){
 //   console.log(req.user);
 //   res.render('index',{title:'Board'});
@@ -87,10 +78,31 @@ https.createServer(options,app).listen(config.https_port, function(){
 
 
 //socket parts
-
+var socketArry={};
 var io = socket_io.listen(server);
 console.log('Socket ready');
 io.sockets.on('connection', function(socket){
   console.log('connection info : ',socket.request.connection._peername);
+  if(socketArry[socket.id]==null) socketArry[socket.id]=[];
 
+  socket.on('room',function(msg){
+    var tempArray = socketArry[socket.id];
+    if(tempArray.length>0){
+      socket.leave(tempArray[0]);
+    }
+      tempArray[0] = msg.id;
+      socket.join(msg.id);
+  });
+  socket.on('disconnect',function(){
+    console.log("disconnect");
+  });
 })
+
+var passportSetup = require('./config/passport/passportSetup');
+passportSetup(app,passport);
+var passport_Router = require('./routes/passport_Router');
+passport_Router(app,passport);
+var view_Router = require('./routes/viewRoute');
+view_Router(app);
+var write_Router = require('./routes/writeRoute');
+write_Router(app,io);

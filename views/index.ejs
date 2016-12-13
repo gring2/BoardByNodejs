@@ -159,7 +159,8 @@
         </div>
        <div ng-view>
 
-	    </div ng-view>
+	     </div ng-view>
+
       <%include ./modal.html %>
 
         <script type="text/javascript" src="../js/angular-route.js"></script>
@@ -169,24 +170,12 @@
         <script type="text/javascript" src="../js/write_controller.js"></script>
 
         <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-sanitize.js"></script>
+        <script type="text/javascript" src="../js/socket_CTR.js"></script>
         <script>
-        (
-          function(){
-            var option = {'forceNew' : true};
-            var url = 'http://localhost:3333/';
-            alert(url);
-            socket = io.connect(url,option);
-            socket.on('connect',function(){
-              println('connected to Web Socket' + url);
-              socket.on('message',function(message){
-                console.log(JSON.stringify(message));
-
-                println('<p> received message' + message.sender+', '+message.recepient+
-                        ', '+message.command+', '+message.type+', '+message.data+'</p>');
-              })
-            });
+          var socket
+          if(socket ===undefined){
+            socket = socketObj()
           }
-        )()
         </script>
   </body>
 </html>

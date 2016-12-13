@@ -37,7 +37,6 @@ var threadSchema = {};
             ,{$inc: {Hits:1}}
             ,{new : true}
             ,function(err,result){
-              console.log(result);
               if(err) reject(err);
               else resolve(result);
             }
