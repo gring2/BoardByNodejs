@@ -1,25 +1,40 @@
 
 myApp.controller('MainCTR' ,['$window','setPagePanner','count','preLoads','$scope', 'Server','$routeParams','sharedProperties','$location'
 ,function ($window,setPagePanner,count,preLoads,$scope, Server,$routeParams,sharedProperties,$location) {
+	//readed comment map
 	var readed = {};
+
 	var socket = $window.socket;
 	$scope.$root.comList;
+
 	socket.connection();
+
+	//number Of pageSet
 	$scope.$root.count=count;
+
+	//Threads now on
 	$scope.$root.threads = preLoads;
 	compareTime();
+
 	$scope.$root.numberOfPannel = setPagePanner($scope.$root.count);
-	$scope.user;
+
+	// show Email address to view
 	$scope.OauthUser = function(value){
-	$scope.user=value;
-	if($scope.user){
+	if(value){
 			$scope.signIned = true;
-			$scope.email = $scope.user;
+			$scope.email = value;
 	}
 	};
-	$scope.signIned = ($routeParams.logined=='true')? true:false;
+	//where now on Signin
+	$scope.signIned = false;
+
+	// message when signUp finished
 	$scope.message;
-	$scope.failLog= ($routeParams.logined=='true' )? true:false;;
+
+	//trigger for signIn fail message
+	$scope.failLog= false;
+
+	//thread number which now read
 	$scope.$root.nowPage = ($scope.$root.nowPage === undefined) ? 1: $scope.$root.nowPage;
 
 	$scope.signIn=function(event){
@@ -42,6 +57,7 @@ myApp.controller('MainCTR' ,['$window','setPagePanner','count','preLoads','$scop
 $scope.signInLogChange = function(event) {
 		$scope.failLog=false;
 	};
+
 $scope.logOut = function(event){
 		Server.post('/logOut')
 		.success(function(data, status,header, config){
@@ -68,6 +84,8 @@ $scope.twitterAuth = function(){
 $scope.googleAuth = function(){
 		window.location='/auth/google';
 	};
+
+
 $scope.pageChange = function(num){
 		console.log(num);
 		$scope.$root.nowPage = num;
@@ -107,11 +125,13 @@ $scope.nextPage = function(){
 		}
 		threadListRenew($scope.$root.nowPage);
 	};
-
+//filter for block that Pannel goes back to first
 $scope.compare = function(value,index){
 		if(index==0) return true;
 		return $scope.$root.numberOfPannel[index]>$scope.$root.numberOfPannel[0];
 	};
+
+
 $scope.openThread = function(id){
 Server.get('/viewThread/'+id)
 		.success(function(data){
@@ -139,10 +159,13 @@ Server.get('/viewThread/'+id)
 			console.log(error);
 		})
 	};
+
+	//close view Page
 	$scope.close = function(){
 		$scope.threadView = null;
 		$scope.threadViewer=undefined; 	$scope.commentList = undefined;
 	}
+	//hide first comment ribbon
 	$scope.hide=function(index){
 		$('#label').hide();
 		$scope.$root.comList[index].newest=false;
@@ -166,6 +189,7 @@ Server.get('/viewThread/'+id)
 
 	}
 
+	//shift pannel array
 	function popAndPush(array, direct){
 		if(direct==true){
 			for(var i =0; i<4;i++){
@@ -182,6 +206,7 @@ Server.get('/viewThread/'+id)
 		}
 	}
 
+	//mark number of now list
 	function pageMark(number){
 		var pages = $('.pagePannel');
 		var curidx= $scope.$root.numberOfPannel.indexOf(number);
@@ -191,7 +216,7 @@ Server.get('/viewThread/'+id)
 			$(pages[curidx]).css('background','rgba(34,36,38,.1)');
 	};
 
-
+	//compare thread's time with localtime
 	function compareTime(){
 		var now = new Date();
 			now= now.getFullYear()+ now.getMonth()+ now.getDate();

@@ -45,6 +45,7 @@ myApp.factory('Server', ['$http', function ($http) {
 	  };
 	}]);
 
+//initiating PagePannelArray
 myApp.factory('setPagePanner',function(count){
 	return function(count){
 		var output = [];
@@ -58,9 +59,6 @@ myApp.factory('setPagePanner',function(count){
 		}
 		if(count%5 >0) output.push(output[output.length-1]+1);
 	}
-		// for(var i =1; i<=23; i++){
-		// 	output.push(i);
-		// }
 		return output;
 	}
 })
