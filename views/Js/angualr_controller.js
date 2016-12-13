@@ -1,6 +1,7 @@
 
 myApp.controller('MainCTR' ,['$window','setPagePanner','count','preLoads','$scope', 'Server','$routeParams','sharedProperties','$location'
 ,function ($window,setPagePanner,count,preLoads,$scope, Server,$routeParams,sharedProperties,$location) {
+	var readed = {};
 	var socket = $window.socket;
 	$scope.$root.comList;
 	socket.connection();
@@ -8,7 +9,6 @@ myApp.controller('MainCTR' ,['$window','setPagePanner','count','preLoads','$scop
 	$scope.$root.threads = preLoads;
 	compareTime();
 	$scope.$root.numberOfPannel = setPagePanner($scope.$root.count);
-	console.log($scope.$root.numberOfPannel);
 	$scope.user;
 	$scope.OauthUser = function(value){
 	$scope.user=value;
@@ -121,10 +121,19 @@ Server.get('/viewThread/'+id)
 			thread.dayDiff = dayDiff;
 			$scope.threadView = thread;
 			sharedProperties.setProperty('nowIndex',id);
+
 			$scope.threadViewer ='../template/viewForm.html';
 			$scope.commentList = '../template/commentList.html';
 			$scope.$root.comList=data.result.comList;
+			$scope.$root.comList[0].newest=true;
 			socket.interActing('room',{id:id});
+			if(readed[id]===null||readed[id]===undefined){
+				readed[id]=[];
+			}else{
+				for(var number in readed[id]){
+					$scope.$root.comList[number].newest=false;
+				}
+			}
 		})
 		.error(function(error){
 			console.log(error);
@@ -133,6 +142,12 @@ Server.get('/viewThread/'+id)
 	$scope.close = function(){
 		$scope.threadView = null;
 		$scope.threadViewer=undefined; 	$scope.commentList = undefined;
+	}
+	$scope.hide=function(index){
+		$('#label').hide();
+		$scope.$root.comList[index].newest=false;
+		var idx=sharedProperties.getProperty('nowIndex');
+		readed[idx].push(index);
 	}
 	//utill function
 

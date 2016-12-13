@@ -10,6 +10,7 @@ function socketObj(){
         var scope=angular.element($('#container')).scope();
         scope.$apply(function(){
           scope.$root.comList.unshift(msg);
+          scope.$root.comList[0].newest=true;
         });
       });
     });

@@ -4,11 +4,12 @@
 <input class="ui button"  type="button" value="OK" ng-click="writeComment()">
 
 <div id="commentList" class="ui celled list" ng-repeat="comment in comList ">
-  <div class="item">
-    <img class="ui avatar image" src="/images/avatar/small/helen.jpg">
+  <div class="item" ng-click="hide($index)">
+      <i class="ui red ribbon label" ng-if="comment.newest==true"  id="label"> new</i>
     <div class="content">
-      <div class="header">{{comment.commentor}}</div>
+      <div class="header">Commentor : {{comment.commentor}}</div>
       {{comment.comment}}
+
     </div>
   </div>
 </div>
