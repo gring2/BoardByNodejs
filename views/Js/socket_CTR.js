@@ -7,6 +7,7 @@ function socketObj(){
     socket.on('connect',function(){
       console.log("connected");
       socket.on('newComment',function(msg){
+        console.log("this is comment");
         var scope=angular.element($('#container')).scope();
         scope.$apply(function(){
           scope.$root.comList.unshift(msg);

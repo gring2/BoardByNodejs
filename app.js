@@ -58,6 +58,7 @@ if (process.env.NODE_ENV === 'development') {
 var accessLogStream = fs.createWriteStream(path.join(__dirname,'access.log'),{flags:'a'});
 
 app.use(morgan('dev',{stream: accessLogStream}));
+
 databse.init(app,config);
 
 app.use(passport.initialize());
@@ -85,8 +86,12 @@ io.sockets.on('connection', function(socket){
   console.log('connection info : ',socket.request.connection._peername);
   if(socketArry[socket.id]==null) socketArry[socket.id]=[];
 
+  //check whether user is in any socket room
+
   socket.on('room',function(msg){
+    //room array
     var tempArray = socketArry[socket.id];
+    //if belong to any room, out and join new room
     if(tempArray.length>0){
       socket.leave(tempArray[0]);
     }

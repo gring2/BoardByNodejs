@@ -26,13 +26,15 @@ module.exports = function(app,socketInstance){
       var comment = req.body.comment;
       var number = req.body.nowIndex;
       var commentor = req.user.email;
+      //write comment into db
       threadController.writeComment(req.app.get('db'),comment,number,commentor)
       .then(function(comment){
+          // update commnetlist
           return threadController.getCommentList(req.app.get('db'),number);
       })
       .then(function(result){
-
-        socketInstance.to(number)
+        //broadcat to socketroom
+        socketInstance.to(number).
         .emit("newComment" ,result[0]);
         res.send({comList:result});
       })
